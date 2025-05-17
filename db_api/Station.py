@@ -1,3 +1,5 @@
+import importlib.resources
+import os
 import requests
 import json
 import datetime
@@ -20,7 +22,8 @@ class Station:
         return json.dumps(self.station_data, indent=2, ensure_ascii=False)
     
     def get_evano_from_name(self, name):
-        with open('db_api/Bahnhoefe.csv', 'r', encoding='utf-8-sig') as file:
+        path = importlib.resources.path('db_api', 'Bahnhoefe.csv')
+        with open(path, 'r', encoding='utf-8-sig') as file:
             reader = csv.DictReader(file, delimiter=';')
             for row in reader:
                 if name.lower() in row['NAME'].lower():
