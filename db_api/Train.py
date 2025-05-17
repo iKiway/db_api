@@ -2,7 +2,7 @@ import json
 from datetime import datetime
 
 class Train:
-    def __init__(self, station_name, arrival_planned, arrival_actual, departure_planned, departure_actual, platform_planned, platform_actual, canceled, train_number, train_type, train_category, train_id, past_destinations, future_destinations):
+    def __init__(self, station_name, arrival_planned, arrival_actual, departure_planned, departure_actual, platform_planned, platform_actual, canceled, train_number, train_type, train_line, train_id, past_destinations, future_destinations):
         self.station_name = station_name
         self.past_destinations = past_destinations
         self.future_destinations = future_destinations
@@ -15,7 +15,7 @@ class Train:
         self.canceled = canceled
         self.train_number = train_number
         self.train_type = train_type
-        self.train_category = train_category
+        self.train_line = train_line
         self.train_id = train_id
         self.platform_change = False if platform_actual == None else True
         self.final_destination = self.future_destinations.split('|')[-1] if self.future_destinations else self.station_name
@@ -45,7 +45,7 @@ class Train:
         print(f"Departure Actual: {self.departure_actual}")
         print(f"Platform Planned: {self.platform_planned}")
         print(f"Platform Actual: {self.platform_actual}")
-        print(f"Train Category: {self.train_category}")
+        print(f"Train Line: {self.train_line}")
         print(f"Delay: {self.delay}")
         print("\n")
         
@@ -83,7 +83,7 @@ class Train:
         return self.train_type
 
     def get_train_category(self):
-        return self.train_category
+        return self.train_line
 
     def get_past_destinations(self):
         return self.past_destinations
