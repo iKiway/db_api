@@ -1,0 +1,41 @@
+import json
+
+class Train:
+    def __init__(self, station_name, arrival_planned, arrival_actual, departure_planned, departure_actual, platform_planned, platform_actual, canceled, train_number, train_type, train_category, train_id, past_destinations, future_destinations):
+        self.station_name = station_name
+        self.past_destinations = past_destinations
+        self.future_destinations = future_destinations
+        self.arrival_planned = arrival_planned
+        self.arrival_actual = arrival_actual
+        self.departure_planned = departure_planned
+        self.departure_actual = departure_actual
+        self.platform_planned = platform_planned
+        self.platform_actual = platform_actual
+        self.canceled = canceled
+        self.train_number = train_number
+        self.train_type = train_type
+        self.train_category = train_category
+        self.train_id = train_id
+        self.platform_change = False if platform_actual == None else True
+        self.final_destination = self.future_destinations.split('|')[-1] if self.future_destinations else self.station_name
+        self.start_station = self.past_destinations.split('|')[0] if self.past_destinations else self.station_name
+        
+        
+    def print_train(self):
+        print(f"Station Name: {self.station_name}")
+        print(f"Train ID: {self.train_id}")
+        print(f"Train Number: {self.train_number}")
+        print(f"Final Destination: {self.final_destination}")
+        print(f"Start Station: {self.start_station}")
+        print(f"Train Type: {self.train_type}")
+        print(f"Past Destinations: {self.past_destinations}")
+        print(f"Future Destinations: {self.future_destinations}")
+        print(f"Canceled: {self.canceled}")
+        print(f"Arrival Planned: {self.arrival_planned}")
+        print(f"Arrival Actual: {self.arrival_actual}")
+        print(f"Departure Planned: {self.departure_planned}")
+        print(f"Departure Actual: {self.departure_actual}")
+        print(f"Platform Planned: {self.platform_planned}")
+        print(f"Platform Actual: {self.platform_actual}")
+        print(f"Train Category: {self.train_category}")
+        print("\n")
