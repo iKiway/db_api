@@ -42,3 +42,6 @@ class Train:
         
     def get_station_name(self):
         return self.station_name
+    
+    def get_train_id(self):
+        return self.train_id

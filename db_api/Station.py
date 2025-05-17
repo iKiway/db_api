@@ -127,7 +127,7 @@ class Station:
 
                         if train_delay.get("ar", {}).get("@cs") == "c" or train_delay.get("dp", {}).get("@cs") == "c":
                             canceled = True
-                            print(train_delay)
+                            # print(train_delay)
                         else:
                             canceled = False
                         break
