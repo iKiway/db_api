@@ -45,3 +45,48 @@ class Train:
     
     def get_train_id(self):
         return self.train_id
+    
+    def get_arrival_planned(self):
+        return self.arrival_planned
+
+    def get_arrival_actual(self):
+        return self.arrival_actual
+
+    def get_departure_planned(self):
+        return self.departure_planned
+
+    def get_departure_actual(self):
+        return self.departure_actual
+
+    def get_platform_planned(self):
+        return self.platform_planned
+
+    def get_platform_actual(self):
+        return self.platform_actual
+
+    def get_canceled(self):
+        return self.canceled
+
+    def get_train_number(self):
+        return self.train_number
+
+    def get_train_type(self):
+        return self.train_type
+
+    def get_train_category(self):
+        return self.train_category
+
+    def get_past_destinations(self):
+        return self.past_destinations
+
+    def get_future_destinations(self):
+        return self.future_destinations
+
+    def get_platform_change(self):
+        return self.platform_change
+
+    def get_final_destination(self):
+        return self.final_destination
+
+    def get_start_station(self):
+        return self.start_station
