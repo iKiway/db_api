@@ -3,7 +3,7 @@ import json
 import datetime
 import xmltodict
 import csv
-from Train import Train
+from .Train import Train
 from datetime import datetime, timedelta
 
 class Station:
