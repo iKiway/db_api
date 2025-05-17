@@ -8,9 +8,6 @@ setup(
     packages=find_packages(),
     install_requires=[
         'requests',
-        'json',
-        'csv',
         'xmltodict',
-        'datetime'
     ],
 )
