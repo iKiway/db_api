@@ -12,15 +12,17 @@ Das Skript stellt eine `Station`-Klasse bereit, die die Interaktion mit der Deut
 
 Die Klasse `Station` bietet Methoden für den Zugriff auf verschiedene Endpunkte der Deutschen Bahn API.
 
-#### Konstruktor: `__init__(self, name)`
+#### Konstruktor: `__init__(self, name, db_client_id, db_api_key)`
 
 * **Parameter:**
   * `name` (str): Der Name des Bahnhofs.
+  * `db_client_id` (str): Die Client-ID für die Deutsche Bahn API.
+  * `db_api_key` (str): Der API-Schlüssel für die Deutsche Bahn API.
 * **Funktionalität:**
   * Initialisiert eine Instanz der Klasse `Station`.
   * Speichert den Bahnhofsnamen.
   * Ruft die EVA-Nummer des Bahnhofs anhand des Namens ab.
-  * Definiert die Header für API-Anfragen.
+  * Definiert die Header für API-Anfragen unter Verwendung der bereitgestellten `db_client_id` und `db_api_key`.
 
 #### Methoden:
 
@@ -154,25 +156,14 @@ pip install requests xmltodict
 
 1.  Importiere die erforderlichen Module und Klassen.
 
-  ```python
-  import requests
-  import json
-  import datetime
-  import xmltodict
-  import csv
-  from Train import Train
-  from datetime import datetime, timedelta
-  ```
-
-2.  Erstelle eine Instanz der Klasse `Station`, um auf Bahnhofsdaten zuzugreifen.
-
-  ```python
-  bahnhof = Station("Dein Bahnhofsname")
-  ```
-
-3.  Verwende die Methoden der Klasse `Station`, um die gewünschten Daten abzurufen.
-
-  ```python
-  zuege = bahnhof.get_train_data()
-  abfahrten = bahnhof.get_sorted_departure_list()
-  ```
+```python
+import requests
+import json
+import datetime
+import xmltodict
+import csv
+from Train import Train
+from datetime import datetime, timedelta
+Erstelle eine Instanz der Klasse Station, um auf Bahnhofsdaten zuzugreifen.  Stelle sicher, dass du deine DB-Client-Id und deinen DB-Api-Key angibst.bahnhof = Station("Dein Bahnhofsname", "DEIN_DB_CLIENT_ID", "DEIN_DB_API_KEY")
+Verwende die Methoden der Klasse Station, um die gewünschten Daten abzurufen.zuege = bahnhof.get_train_data()
+abfahrten = bahnhof.get_sorted_departure_list()
