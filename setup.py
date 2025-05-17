@@ -6,6 +6,7 @@ setup(
     description='A Python package for interacting with the Deutsche Bahn API',
     author='Kimon Beyer',
     packages=find_packages(),
+    package_data={'db_api': ['Bahnhoefe.csv']},
     install_requires=[
         'requests',
         'xmltodict',
