@@ -151,16 +151,16 @@ class Station:
         if delay:
             sorted_trains = sorted(
                 train_list, 
-                key=lambda train: int(train.departure_actual.strftime("%y%m%d%H%M")) if train.departure_actual.strftime("%y%m%d%H%M") is not None else int(train.departure_planned.strftime("%y%m%d%H%M"))
+                key=lambda train: int(train.departure_actual) if train.departure_actual is not None else int(train.departure_planned)
             )
         else:
             sorted_trains = sorted(
                 train_list, 
-                key=lambda train: int(train.departure_planned.strftime("%y%m%d%H%M"))
+                key=lambda train: int(train.departure_planned)
             )
         sorted_trains = [
             zug for zug in sorted_trains
-            if (int(zug.departure_actual.strftime("%y%m%d%H%M")) if zug.departure_actual is not None else int(zug.departure_planned.strftime("%y%m%d%H%M"))) >= time_flag
+            if (int(zug.departure_actual) if zug.departure_actual is not None else int(zug.departure_planned)) >= time_flag
         ]
         return sorted_trains
     
