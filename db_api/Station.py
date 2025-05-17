@@ -22,7 +22,7 @@ class Station:
         return json.dumps(self.station_data, indent=2, ensure_ascii=False)
     
     def get_evano_from_name(self, name):
-        path = importlib.resources.path('db_api', 'Bahnhoefe.csv')
+        path = importlib.resources.path('db_api.db_api', 'Bahnhoefe.csv')
         with open(path, 'r', encoding='utf-8-sig') as file:
             reader = csv.DictReader(file, delimiter=';')
             for row in reader:
