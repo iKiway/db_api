@@ -40,6 +40,7 @@ class Train:
         print(f"Platform Planned: {self.platform_planned}")
         print(f"Platform Actual: {self.platform_actual}")
         print(f"Train Category: {self.train_category}")
+        print(f"Delay: {self.delay}")
         print("\n")
         
     def get_station_name(self):
@@ -92,3 +93,6 @@ class Train:
 
     def get_start_station(self):
         return self.start_station
+    
+    def get_delay(self):
+        return self.delay
