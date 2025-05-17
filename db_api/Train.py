@@ -6,10 +6,10 @@ class Train:
         self.station_name = station_name
         self.past_destinations = past_destinations
         self.future_destinations = future_destinations
-        self.arrival_planned = arrival_planned
-        self.arrival_actual = arrival_actual
-        self.departure_planned = departure_planned
-        self.departure_actual = departure_actual
+        self.arrival_planned = datetime.strptime(arrival_planned, "%y%m%d%H%M") if arrival_planned else None
+        self.arrival_actual = datetime.strptime(arrival_actual, "%y%m%d%H%M") if arrival_actual else None
+        self.departure_planned = datetime.strptime(departure_planned, "%y%m%d%H%M") if departure_planned else None
+        self.departure_actual = datetime.strptime(departure_actual, "%y%m%d%H%M") if departure_actual else None
         self.platform_planned = platform_planned
         self.platform_actual = platform_actual
         self.canceled = canceled
@@ -20,9 +20,15 @@ class Train:
         self.platform_change = False if platform_actual == None else True
         self.final_destination = self.future_destinations.split('|')[-1] if self.future_destinations else self.station_name
         self.start_station = self.past_destinations.split('|')[0] if self.past_destinations else self.station_name
-        self.delay = None if self.arrival_actual == None else datetime.strptime(self.arrival_actual, "%y%m%d%H%M") - datetime.strptime(self.arrival_planned, "%y%m%d%H%M") if self.arrival_planned != None else None
-        
-        
+        if self.departure_actual != None and self.departure_planned != None:
+            delay_time = self.departure_actual - self.departure_planned
+            self.delay = int(delay_time.total_seconds() // 60)
+        elif self.arrival_actual != None and self.arrival_planned != None:
+            delay_time = self.arrival_actual - self.arrival_planned
+            self.delay = int(delay_time.total_seconds() // 60)
+        else:
+            self.delay = None
+
     def print_train(self):
         print(f"Station Name: {self.station_name}")
         print(f"Train ID: {self.train_id}")
