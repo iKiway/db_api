@@ -39,3 +39,6 @@ class Train:
         print(f"Platform Actual: {self.platform_actual}")
         print(f"Train Category: {self.train_category}")
         print("\n")
+        
+    def get_station_name(self):
+        return self.station_name
