@@ -22,12 +22,12 @@ class Station:
         return json.dumps(self.station_data, indent=2, ensure_ascii=False)
     
     def get_evano_from_name(self, name):
-        path = importlib.resources.path('db_api', 'Bahnhoefe.csv')
-        with open(path, 'r', encoding='utf-8-sig') as file:
-            reader = csv.DictReader(file, delimiter=';')
-            for row in reader:
-                if name.lower() in row['NAME'].lower():
-                    return row['EVA_NR']
+        with importlib.resources.path('db_api', 'Bahnhoefe.csv') as path:
+            with open(path, 'r', encoding='utf-8-sig') as file:
+                reader = csv.DictReader(file, delimiter=';')
+                for row in reader:
+                    if name.lower() in row['NAME'].lower():
+                        return row['EVA_NR']
         return None
     
     def get_evano(self):
