@@ -45,7 +45,7 @@ class Station:
         
     def send_request_planned_many(self, date, hour, num_hours = 1):
         full_response = None
-        for i in range(num_hours):
+        for i in range(-1, num_hours):
             dt = datetime.strptime(date + hour, "%y%m%d%H")
             dt_plus1 = dt + timedelta(hours=i)
             new_date = dt_plus1.strftime("%y%m%d")
@@ -82,12 +82,38 @@ class Station:
         else:
             print(f"Error: {response_delay.status_code}")
             return None
+        
+    def get_delay_data(self):
+        delay_data = self.send_request_delay()
+        if delay_data is not None:
+            station_name = delay_data["timetable"]["@station"]
+            train_list = []
+            for train_data in delay_data["timetable"]["s"]:
+                train_id = train_data["@id"]
+                arrival_actual = train_data.get("ar", {}).get("@ct", None)
+                departure_actual = train_data.get("dp", {}).get("@ct", None)
+                platform_actual = train_data.get("ar", {}).get("@pp", None) or train_data.get("dp", {}).get("@pp", None)
+                
+                if train_data.get("ar", {}).get("@cs") == "c" or train_data.get("dp", {}).get("@cs") == "c":
+                    canceled = True
+                else:
+                    canceled = False
+                
+                train = Train(station_name, None, arrival_actual, None, departure_actual, None, platform_actual, canceled, None, None, None, train_id, None, None)
+                train_list.append(train)
+            return train_list
+        else:
+            return []
+        
     
     def get_train_data(self, date=datetime.now().strftime("%y%m%d"), hour=datetime.now().strftime("%H"), num_hours = 1):
         train_list = []
         
         planned_data = self.send_request_planned_many(date, hour, num_hours)
         delay_data = self.send_request_delay()
+        delay_list = (delay_data or {}).get("timetable", {}).get("s", [])
+        
+        print(f"Found {len(delay_list)} trains with delay data.")
         if planned_data is not None:
             station_name = planned_data["timetable"]["@station"]
             
@@ -115,25 +141,21 @@ class Station:
                     departure_planned = None
                     future_destinations = None
                     
-                for train_delay in (delay_data or {}).get("timetable", {}).get("s", []):
+                for idx, train_delay in enumerate(delay_list):
                     if train_id == train_delay["@id"]:
                         arrival_actual = train_delay.get("ar", {}).get("@ct", None)
                         departure_actual = train_delay.get("dp", {}).get("@ct", None)
                         platform_actual = train_delay.get("ar", {}).get("@pp", None)
                         if platform_actual is None:
                             platform_actual = train_delay.get("dp", {}).get("@pp", None)
-                        
-
-                        m_list = train_delay.get("dp", {}).get("m", [])
-                        if m_list is []:
-                            m_list = train_delay.get("ar", {}).get("m", [])
 
                         if train_delay.get("ar", {}).get("@cs") == "c" or train_delay.get("dp", {}).get("@cs") == "c":
                             canceled = True
-                            # print(train_delay)
                         else:
                             canceled = False
+                        del delay_list[idx]
                         break
+
                 else:
                     arrival_actual = None
                     departure_actual = None
@@ -143,6 +165,27 @@ class Station:
                 
                 train = Train(station_name, arrival_planned, arrival_actual, departure_planned, departure_actual, platform_planned, platform_actual, canceled, train_number, train_type, train_line, train_id, past_destinations, future_destinations)
                 train_list.append(train)
+
+            if delay_list:
+                for train_delay in delay_list:
+                    if train_delay.get("ar", {}).get("@pt", None) is not None and train_delay.get("dp", {}).get("@pt", None) is not None and train_delay.get("tl", {}).get("@c", None) is not None:
+                        arrival_planned = train_delay.get("ar", {}).get("@pt", None)
+                        departure_planned = train_delay.get("dp", {}).get("@pt", None)
+                        platform_planned = train_delay.get("ar", {}).get("@pp", None)
+                        arrival_actual = train_delay.get("ar", {}).get("@ct", None)
+                        departure_actual = train_delay.get("dp", {}).get("@ct", None)
+                        platform_actual = train_delay.get("ar", {}).get("@pp", None)
+                        train_number = train_delay.get("tl", {}).get("@n", None)
+                        train_type = train_delay.get("tl", {}).get("@c", None)
+                        train_line = train_delay.get("ar", {}).get("@l", None) or train_delay.get("dp", {}).get("@l", None)
+                        train = Train(station_name, arrival_planned, arrival_actual, departure_planned, departure_actual, platform_planned, platform_actual, canceled, train_number, train_type, train_line, train_id, past_destinations, future_destinations)
+                        train_list.append(train)
+
+            if delay_list:
+                print(len(delay_list), "Trains with delay not found in planned data.")
+            else:
+                print("No planned data found for the given date and hour.")
+            
         else:
             train_list = []
 
