@@ -45,7 +45,7 @@ class Station:
         
     def send_request_planned_many(self, date, hour, num_hours = 1):
         full_response = None
-        for i in range(-1, num_hours):
+        for i in range(-5, num_hours):
             dt = datetime.strptime(date + hour, "%y%m%d%H")
             dt_plus1 = dt + timedelta(hours=i)
             new_date = dt_plus1.strftime("%y%m%d")
