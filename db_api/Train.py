@@ -79,10 +79,10 @@ class Train:
     def get_train_number(self):
         return self.train_number
 
-    def get_train_type(self):
+    def get_category(self):
         return self.category
 
-    def get_train_line(self):
+    def get_line_name(self):
         return self.line_name
 
     def get_past_destinations(self):
