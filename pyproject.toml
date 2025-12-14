@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "db_api"
-version = "0.2"
+version = "0.3"
 description = "A Python package for interacting with the Deutsche Bahn API"
 authors = [
     {name = "Kimon Beyer"}
