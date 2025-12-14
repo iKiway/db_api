@@ -120,22 +120,22 @@ class Station:
             for train_data in planned_data["timetable"]["s"]:
                 train_id = train_data["@id"]
                 
-                train_type = train_data["tl"]["@c"]
+                category = train_data["tl"]["@c"]
                 train_number = train_data["tl"]["@n"]
                 if 'ar' in train_data.keys():
                     arrival_planned = train_data["ar"]["@pt"]
                     platform_planned = train_data["ar"]["@pp"]
-                    train_line = train_data["ar"].get("@l", None)
+                    line_name = train_data["ar"].get("@l", None)
                     past_destinations = train_data["ar"].get("@ppth", None)
                 else:
                     arrival_planned = None
                     platform_planned = None
-                    train_line = None
+                    line_name = None
                     past_destinations = None
                 if 'dp' in train_data.keys():
                     departure_planned = train_data["dp"]["@pt"]
                     platform_planned = train_data["dp"]["@pp"]
-                    train_line = train_data["dp"].get("@l", None)
+                    line_name = train_data["dp"].get("@l", None)
                     future_destinations = train_data["dp"].get("@ppth", None)
                 else:
                     departure_planned = None
@@ -163,7 +163,7 @@ class Station:
                     canceled = False
                         
                 
-                train = Train(station_name, arrival_planned, arrival_actual, departure_planned, departure_actual, platform_planned, platform_actual, canceled, train_number, train_type, train_line, train_id, past_destinations, future_destinations)
+                train = Train(station_name, arrival_planned, arrival_actual, departure_planned, departure_actual, platform_planned, platform_actual, canceled, train_number, category, line_name, train_id, past_destinations, future_destinations)
                 train_list.append(train)
 
             if delay_list:
@@ -176,9 +176,9 @@ class Station:
                         departure_actual = train_delay.get("dp", {}).get("@ct", None)
                         platform_actual = train_delay.get("ar", {}).get("@pp", None)
                         train_number = train_delay.get("tl", {}).get("@n", None)
-                        train_type = train_delay.get("tl", {}).get("@c", None)
-                        train_line = train_delay.get("ar", {}).get("@l", None) or train_delay.get("dp", {}).get("@l", None)
-                        train = Train(station_name, arrival_planned, arrival_actual, departure_planned, departure_actual, platform_planned, platform_actual, canceled, train_number, train_type, train_line, train_id, past_destinations, future_destinations)
+                        category = train_delay.get("tl", {}).get("@c", None)
+                        line_name = train_delay.get("ar", {}).get("@l", None) or train_delay.get("dp", {}).get("@l", None)
+                        train = Train(station_name, arrival_planned, arrival_actual, departure_planned, departure_actual, platform_planned, platform_actual, canceled, train_number, category, line_name, train_id, past_destinations, future_destinations)
                         train_list.append(train)
 
             if delay_list:
