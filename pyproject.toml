@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "db_api"
+version = "0.1"
+description = "A Python package for interacting with the Deutsche Bahn API"
+authors = [
+    {name = "Kimon Beyer"}
+]
+dependencies = [
+    "requests",
+    "xmltodict"
+]
+# Es ist gute Praxis, eine Mindest-Python-Version anzugeben (optional)
+requires-python = ">=3.7" 
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.setuptools.package-data]
+# Hier stellen wir sicher, dass deine CSV-Datei mitgepackt wird
+db_api = ["Bahnhoefe.csv"]
