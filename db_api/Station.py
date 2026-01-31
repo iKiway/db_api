@@ -191,7 +191,7 @@ class Station:
 
         return train_list
     
-    def get_sorted_departure_list(self, delay=True, date=datetime.now().strftime("%y%m%d"), hour=datetime.now().strftime("%H"), time_flag = int(datetime.now().strftime("%y%m%d%H%M")), num_hours = 1):
+    def get_sorted_departure_list(self, delay=True, date=datetime.now().strftime("%y%m%d"), hour=datetime.now().strftime("%H"), time_flag = int(datetime.now().strftime("%y%m%d%H%M")), num_hours = 1, filterByDirection = False, direction = ""):
         train_list = self.get_train_data(date, hour, num_hours)
         train_list = [train for train in train_list if train.departure_planned is not None]
         if delay:
@@ -204,6 +204,30 @@ class Station:
                 train_list, 
                 key=lambda train: int(train.departure_planned.strftime("%y%m%d%H%M"))
             )
+        if filterByDirection:
+            # direction kann ein String, JSON-String oder eine Liste sein
+            if isinstance(direction, str):
+                # Versuche JSON zu parsen, falls es ein JSON-String ist
+                if direction.strip().startswith('['):
+                    try:
+                        directions = json.loads(direction)
+                    except json.JSONDecodeError:
+                        directions = [direction] if direction != "" else []
+                else:
+                    directions = [direction] if direction != "" else []
+            elif isinstance(direction, list):
+                directions = direction
+            else:
+                directions = []
+            
+            if directions:
+                sorted_trains = [
+                    zug for zug in sorted_trains
+                    if zug.future_destinations is not None and any(
+                        dir.strip().lower() in [dest.strip().lower() for dest in zug.future_destinations.split('|')]
+                        for dir in directions
+                    )
+                ]
         sorted_trains = [
             zug for zug in sorted_trains
             if (int(zug.departure_actual.strftime("%y%m%d%H%M")) if zug.departure_actual is not None else int(zug.departure_planned.strftime("%y%m%d%H%M"))) >= time_flag
